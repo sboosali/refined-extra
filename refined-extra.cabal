@@ -46,14 +46,16 @@ library
 
  exposed-modules:
   Refined.Extra
+  Refined.Fraction
 
- other-modules:
+ -- other-modules:
+  Refined.Main
   Refined.Internal
 
  build-depends:
     base >=4.7 && <5
   , template-haskell >=2.10
-  
+
   , refined >=0.1.0
 
 

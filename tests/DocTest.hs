@@ -2,6 +2,6 @@
 import Test.DocTest
 
 main = doctest
- [ "sources/Refined.hs"
+ [ "sources/Refined/Fraction.hs"
+ , "sources/Refined/Extra.hs"
  ]
-

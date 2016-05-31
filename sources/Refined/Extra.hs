@@ -1,4 +1,4 @@
-{-# LANGUAGE NamedFieldPuns, TypeOperators #-}
+{-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE TypeFamilies, DataKinds, TypeSynonymInstances, FlexibleInstances, ConstraintKinds, KindSignatures, ScopedTypeVariables #-}
 module Refined.Extra where
 import Refined.Internal
@@ -6,8 +6,9 @@ import Refined
 
 import GHC.TypeLits
 import Data.Proxy
-import Control.Arrow ((>>>))
 import Data.Maybe (fromJust)
+
+import Control.Arrow ((>>>))
 import Data.Function ((&))
 
 --------------------------------------------------------------------------------
@@ -35,31 +36,6 @@ instance
 
 unsafeBetween :: (IsBetween min max a) => a -> Between min max a
 unsafeBetween = refine >>> either2maybe >>> fromJust -- TODO callstack
-
---------------------------------------------------------------------------------
--- Fraction
-
-{- | a real number on the unit interval, @[0,1]@
-(i.e. between zero and one, inclusive).
-
-<http://nikita-volkov.github.io/refined/>
-
-<http://stackoverflow.com/questions/30531944/a-type-thats-easy-to-do-arithmetic-with-and-is-guaranteed-in-bounds>
-
--}
-type Fraction = Between 0 1 Double
-
--- instance Bounded Fraction where
---   minBound = unsafeFraction 0
---   maxBound = unsafeFraction 1
-
-unsafeFraction :: Double -> Fraction
-unsafeFraction = unsafeBetween
-
-isFraction :: Double -> Maybe Fraction
-isFraction = refine >>> either2maybe
-
--- refineTH :: (Predicate p x, Lift x) => x -> Q (TExp (Refined p x))
 
 --------------------------------------------------------------------------------
 -- Aliases
