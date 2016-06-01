@@ -1,6 +1,13 @@
 {-# LANGUAGE TemplateHaskell, NamedFieldPuns #-}
 {-# LANGUAGE DataKinds #-}
 
+{-|
+
+Background:
+
+* <http://stackoverflow.com/questions/30531944/a-type-thats-easy-to-do-arithmetic-with-and-is-guaranteed-in-bounds>
+
+-}
 module Refined.Fraction where
 import Refined.Internal
 import Refined.Extra
@@ -26,10 +33,7 @@ import Data.Function ((&))
 
 -}
 type Fraction = Between 0 1 Double
-
--- instance Bounded Fraction where
---   minBound = unsafeFraction 0
---   maxBound = unsafeFraction 1
+-- newtype
 
 unsafeFraction :: Double -> Fraction
 unsafeFraction = unsafeBetween
@@ -65,10 +69,10 @@ Refined 0.5
 fraction :: QuasiQuoter
 fraction = defaultQuasiQuoter{quoteExp}
  where
- quoteExp s = parseRefine s & either fail _splice
+ quoteExp s = parseRefine s & either fail __splice__
 
- _splice :: Fraction -> Q Exp
- _splice x = [| x |]
+ __splice__ :: Fraction -> Q Exp
+ __splice__ x = [| x |]
 
  parseRefine :: String -> Either String Fraction
  parseRefine s = do

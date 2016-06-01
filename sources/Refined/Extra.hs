@@ -1,12 +1,18 @@
 {-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE TypeFamilies, DataKinds, TypeSynonymInstances, FlexibleInstances, ConstraintKinds, KindSignatures, ScopedTypeVariables #-}
+{-| Extensions to the @refined@ package.
+
+Background:
+
+* <http://nikita-volkov.github.io/refined/>
+
+-}
 module Refined.Extra where
 import Refined.Internal
 import Refined
 
 import GHC.TypeLits
 import Data.Proxy
-import Data.Maybe (fromJust)
 
 import Control.Arrow ((>>>))
 import Data.Function ((&))
@@ -16,7 +22,13 @@ import Data.Function ((&))
 
 type Between (min :: Nat) (max :: Nat) = Refined (FromTo min max)
 
-type IsBetween (min :: Nat) (max :: Nat) a = (Num a, Ord a, KnownNat min, KnownNat max, min <= max)
+type IsBetween (min :: Nat) (max :: Nat) a =
+   ( Num a
+   , Ord a
+   , KnownNat min
+   , KnownNat max
+   , min <= max
+   )
 
 instance
  (IsBetween min max a)
@@ -35,7 +47,7 @@ instance
      _maximum = natVal (Proxy::Proxy max) & fromIntegral
 
 unsafeBetween :: (IsBetween min max a) => a -> Between min max a
-unsafeBetween = refine >>> either2maybe >>> fromJust -- TODO callstack
+unsafeBetween = refine >>> unsafeFromRight -- TODO callstack
 
 --------------------------------------------------------------------------------
 -- Aliases

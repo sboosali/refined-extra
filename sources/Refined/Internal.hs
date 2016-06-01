@@ -9,6 +9,9 @@ import Language.Haskell.TH.Quote
 either2maybe :: Either e a -> Maybe a
 either2maybe = either (const Nothing) Just
 
+unsafeFromRight :: Either String a -> a
+unsafeFromRight = either error id
+
 {-|
 
 @
