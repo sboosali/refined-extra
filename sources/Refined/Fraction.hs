@@ -33,7 +33,8 @@ import Data.Function ((&))
 
 -}
 type Fraction = Between 0 1 Double
--- newtype
+-- newtype Fraction = Fraction (Between 0 1 Double)
+-- TODO instance Num. interally maybe violate invariant, but getFraction calls bounded. 
 
 unsafeFraction :: Double -> Fraction
 unsafeFraction = unsafeBetween
